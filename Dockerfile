@@ -22,7 +22,7 @@ EXPOSE 8080
 CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
 
 # Start Selenium Test
-# COPY selenium-server-standalone-3.14.0.jar /tmp
-# RUN nohup java -jar /tmp/selenium-server-standalone-3.14.0.jar &
+COPY selenium-server-standalone-3.14.0.jar /tmp
+RUN nohup java -jar /tmp/selenium-server-standalone-3.14.0.jar &
 
-# CMD ["/bin/bash"]
+CMD ["/bin/bash"]
