@@ -2,8 +2,8 @@ pipeline {
     agent none
     stages {
         
-        stage('install puppet on slave') {
-            agent { label 'slave'}
+        stage('install puppet on slave1') {
+            agent { label 'slave1'}
             steps {
                 echo 'Install Puppet'
                 sh "wget -N -O 'puppet.deb' https://apt.puppetlabs.com/puppet6-release-bionic.deb"
@@ -15,7 +15,7 @@ pipeline {
         }
 
         stage('configure and start puppet') {
-            agent { label 'slave'}
+            agent { label 'slave1'}
             steps {
                 echo 'configure puppet'
                 sh "mkdir -p /etc/puppetlabs/puppet"
@@ -29,7 +29,7 @@ pipeline {
         }
 
         stage('Install Docker on slave through puppet') {
-            agent{ label 'slave'}
+            agent{ label 'slave1'}
             steps {
                 sh "sudo /opt/puppetlabs/bin/puppet module install garethr-docker"
                 sh "sudo /opt/puppetlabs/bin/puppet apply /home/jenkins/jenkins_slave/workspace/Certification/dockerce.pp"
@@ -37,7 +37,7 @@ pipeline {
         }
 
         stage('Git Checkout') {
-            agent{ label 'slave'}
+            agent{ label 'slave1'}
             steps {
                 sh "if [ ! -d '/home/jenkins/jenkins_slave/workspace/Certification' ]; then git clone https://github.com/Abhay-Sharma14/edureka-project.git /home/jenkins/jenkins_slave/workspace/Certification ; fi"
                 sh "cd /home/jenkins/jenkins_slave/workspace/Certification && sudo git checkout main"
@@ -45,7 +45,7 @@ pipeline {
         }
         
         stage('Docker Build and Run') {
-            agent{ label 'slave'}
+            agent{ label 'slave1'}
             steps {
                 sh "sudo docker rm -f webapp || true"
                 sh "cd /home/jenkins/jenkins_slave/workspace/Certification && sudo docker build -t test ."
@@ -54,7 +54,7 @@ pipeline {
         }
 
 		stage('Setting Prerequisite for Selenium') {
-            agent{ label 'slave'}
+            agent{ label 'slave1'}
             steps {
                 sh "wget -N -O 'firefox-57.0.tar.bz2' http://ftp.mozilla.org/pub/firefox/releases/57.0/linux-x86_64/en-US/firefox-57.0.tar.bz2"
 				sh "tar -xjf firefox-57.0.tar.bz2"
@@ -66,7 +66,7 @@ pipeline {
         }
 
         stage('Check if selenium test run') {
-            agent{ label 'slave'}
+            agent{ label 'slave1'}
             steps {
 		sh "cd /home/jenkins/jenkins_slave/workspace/Certification/"
 		sh "java -jar certification-project-1.0-SNAPSHOT-jar-with-dependencies.jar --headless"
