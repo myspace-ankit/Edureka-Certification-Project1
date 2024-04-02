@@ -1,7 +1,5 @@
 FROM devopsedu/webapp
 
-MAINTAINER Abhay Sharma <abhay22mech@gmail.com>
-
 #Update Repository
 RUN apt-get update -y
 
